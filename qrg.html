@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            background: #fff;
+            color: #0a2e6d;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .qrg-container {
+            background: linear-gradient(135deg, #2196f3 60%, #6ec6ff 100%);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px #2196f366, 0 0 0 2px #6ec6ff99, 0 2px 24px #fff8;
+            padding: 44px 36px 36px 36px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .qrg-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 60px;
+            background: linear-gradient(90deg, #fff8 0%, #fff4 50%, #fff0 100%);
+            border-radius: 20px 20px 0 0;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        input[type="text"] {
+            width: 320px;
+            padding: 12px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            border: 2px solid #1565c0;
+            background: #e3f2fd;
+            color: #0a2e6d;
+            margin-bottom: 24px;
+            outline: none;
+            box-shadow: 0 0 8px #2196f344;
+        }
+        #qrcode {
+            margin: 0 auto;
+            display: block;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 16px #2196f344, 0 2px 12px #fff8;
+        }
+        label {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            display: block;
+            color: #fff;
+            text-shadow: 0 2px 8px #1565c0cc;
+        }
+        button {
+            margin-top: 18px;
+            padding: 10px 32px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            border: none;
+            background: #1565c0;
+            color: #fff;
+            box-shadow: 0 2px 12px #2196f344;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #0d47a1;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+</head>
+<body>
+    <div style="margin-bottom: 32px; text-align:center;">
+        <h1 style="margin:0; font-size:2.2em; color:#1565c0; letter-spacing:2px; text-shadow:0 2px 12px #6ec6ffcc;">Stephen Lequin QR Generator</h1>
+    </div>
+    <div class="qrg-container">
+        <label for="qr-input">Enter text or URL to generate QR code:</label>
+        <input type="text" id="qr-input" placeholder="Type here..." value="https://">
+        <canvas id="qrcode" width="256" height="256"></canvas>
+        <button id="save-btn">Save as PNG</button>
+    </div>
+    <div style="margin-top: 32px; text-align:center; color:#1565c0; font-size:1em; opacity:0.7;">
+        &copy; by stephenlequin
+    </div>
+    <script>
+        const qr = new QRious({
+            element: document.getElementById('qrcode'),
+            size: 256,
+            value: document.getElementById('qr-input').value
+        });
+        document.getElementById('qr-input').addEventListener('input', function() {
+            qr.value = this.value;
+        });
+        document.getElementById('save-btn').onclick = function() {
+            const canvas = document.getElementById('qrcode');
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'qr-code.png';
+            link.click();
+        };
+    </script>
+</body>
+</html>
